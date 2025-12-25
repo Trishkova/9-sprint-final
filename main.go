@@ -73,13 +73,7 @@ func maxChunks(data []int) int {
 			defer wg.Done()
 
 			if len(part) > 0 {
-				m := part[0]
-				for _, val := range part {
-					if val > m {
-						m = val
-					}
-				}
-				chunkMaxes[index] = m
+				chunkMaxes[index] = maximum(part)
 			}
 		}(i, data[start:end])
 	}
@@ -96,14 +90,14 @@ func main() {
 	fmt.Println("Ищем максимальное значение в один поток")
 	now := time.Now()
 	max := maximum(array)
-	elapsed := time.Now().Sub(now)
+	elapsed := time.Since(now)
 
 	fmt.Printf("Максимальное значение элемента: %d\nВремя поиска: %d ms\n", max, elapsed)
 
 	fmt.Printf("Ищем максимальное значение в %d потоков\n", CHUNKS)
 	now = time.Now()
 	max = maxChunks(array)
-	elapsed = time.Now().Sub(now)
+	elapsed = time.Since(now)
 
 	fmt.Printf("Максимальное значение элемента: %d\nВремя поиска: %d ms\n", max, elapsed)
 }
